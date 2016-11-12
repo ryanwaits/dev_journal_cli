@@ -53,6 +53,22 @@ class DevJournalCLI < Thor
     format_tasks(response)
   end
 
+  desc 'add task', 'Add a task to DevJournal'
+  def add name, level
+    uri = URI.parse("http://localhost:3000/api/v1/tasks")
+    request = Net::HTTP::Post.new(uri)
+    request["Authorization"] = "Token token=#{TOKEN}"
+    request.body = "task[name]=#{name}&task[level]=#{level}"
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
+      http.request(request)
+    end
+    if response.code == 201
+      format_tasks(response)
+    else
+      puts "Something went wrong: #{response.code}"
+    end
+  end
+
   desc 'task', 'Retrieve a task from DevJournal'
   def task id
     uri = URI.parse("http://localhost:3000/api/v1/tasks/#{id}")
