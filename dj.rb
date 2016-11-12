@@ -1,22 +1,30 @@
+require 'net/http'
+require 'uri'
 require 'thor'
-require 'httparty'
 
-TOKEN = ENV[:DEVJOURNAL_TOKEN]
+TOKEN = ENV["DEVJOURNAL_TOKEN"]
 
 class DevJournalCLI < Thor
-  include HTTParty
-  base_uri = 'http://localhost:3000/api/v1/'
-
-  desc 'me', 'returns user information from DevJournal'
+  desc 'me', 'Retrieve user profile from DevJournal'
   def me
-    data = self.class.get('/me', query: {api_key: TOKEN})
-    puts data.parsed_response
+    uri = URI.parse("http://localhost:3000/api/v1/me")
+    request = Net::HTTP::Get.new(uri)
+    request["Authorization"] = "Token token=#{TOKEN}"
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
+      http.request(request)
+    end
+    puts response.body
   end
 
-  desc 'tasks', 'returns list of unfinished tasks from DevJournal'
+  desc 'tasks', 'Retrieve tasks from DevJournal'
   def tasks
-    data = self.class.get('/tasks', query: {api_key: TOKEN})
-    puts data.parsed_response
+    uri = URI.parse("http://localhost:3000/api/v1/tasks")
+    request = Net::HTTP::Get.new(uri)
+    request["Authorization"] = "Token token=#{TOKEN}"
+    response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
+      http.request(request)
+    end
+    puts response.body
   end
 end
 
