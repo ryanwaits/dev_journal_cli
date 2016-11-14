@@ -32,7 +32,7 @@ class DevJournalCLI < Thor
 
   desc 'me', 'Retrieve user profile from DevJournal'
   def me
-    uri = URI.parse("http://localhost:3000/api/v1/me")
+    uri = URI.parse("https://protected-everglades-90979.herokuapp.com/api/v1/me")
     request = Net::HTTP::Get.new(uri)
     request["Authorization"] = "Token token=#{TOKEN}"
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
@@ -44,7 +44,7 @@ class DevJournalCLI < Thor
 
   desc 'tasks', 'Retrieve tasks from DevJournal'
   def tasks
-    uri = URI.parse("http://localhost:3000/api/v1/tasks")
+    uri = URI.parse("https://protected-everglades-90979.herokuapp.com/api/v1/tasks")
     request = Net::HTTP::Get.new(uri)
     request["Authorization"] = "Token token=#{TOKEN}"
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
@@ -55,7 +55,7 @@ class DevJournalCLI < Thor
 
   desc 'add task', 'Add a task to DevJournal'
   def add name, level
-    uri = URI.parse("http://localhost:3000/api/v1/tasks")
+    uri = URI.parse("https://protected-everglades-90979.herokuapp.com/api/v1/tasks")
     request = Net::HTTP::Post.new(uri)
     request["Authorization"] = "Token token=#{TOKEN}"
     request.body = "task[name]=#{name}&task[level]=#{level}"
@@ -71,7 +71,7 @@ class DevJournalCLI < Thor
 
   desc 'task', 'Retrieve a task from DevJournal'
   def task id
-    uri = URI.parse("http://localhost:3000/api/v1/tasks/#{id}")
+    uri = URI.parse("https://protected-everglades-90979.herokuapp.com/api/v1/tasks/#{id}")
     request = Net::HTTP::Get.new(uri)
     request["Authorization"] = "Token token=#{TOKEN}"
     response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
